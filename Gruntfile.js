@@ -32,13 +32,13 @@ module.exports = function(grunt) {
 
 		// uglify to concat and minify
 		uglify: {
+			options: {
+				mangle: false
+			},
 			dist: {
 				files: {
 					'public/build.min.js': [
-						'<%= dirs.libs %>/*/*.js',
-						'<%= dirs.plugins %>/*/*.js',
-						'<%= dirs.js %>/app/*.js',
-						'<%= dirs.js %>/*/*.js'
+						'public/build.js'
 					]
 				}
 			},
@@ -60,27 +60,6 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
-
-		// watch for changes and trigger sass, jshint, uglify and livereload browser
-		watch: {
-			sass: {
-				files: [
-					'<%= dirs.sass %>/**'
-				],
-				tasks: ['sass']
-			},
-			js: {
-				files: [
-					'<%= dirs.libs %>/**',
-					'<%= dirs.js %>/**'
-				],
-				tasks: [ 'uglify']
-			},
-			options: {
-				spawn: false
-			}
-		},
-
 		nodemon: {
 			dev: {
 				script: 'app/',
@@ -97,8 +76,40 @@ module.exports = function(grunt) {
 				logConcurrentOutput: true
 			},
 			tasks: ['nodemon', 'watch']
-		},
-
+		},	
+		concat: {
+			options: {
+				separator: ';\n',
+			},
+			dist: {
+				src: [
+					'<%= dirs.libs %>/*/*.js',
+					'<%= dirs.plugins %>/*/*.js',
+					'<%= dirs.js %>/app/*.js',
+					'<%= dirs.js %>/*/*.js'
+				],
+				dest: 'public/build.js',
+			},
+		},	
+		// watch for changes and trigger sass, jshint, uglify and livereload browser
+		watch: {
+			sass: {
+				files: [
+					'<%= dirs.sass %>/**'
+				],
+				tasks: ['sass']
+			},
+			js: {
+				files: [
+					'<%= dirs.libs %>/**',
+					'<%= dirs.js %>/**'
+				],
+				tasks: ['concat', 'uglify']
+			},
+			options: {
+				spawn: false
+			}
+		}
 	};
 
 	// Initialize Grunt Config
