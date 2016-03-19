@@ -11,11 +11,12 @@
 
 				.when('/board', {
 					templateUrl: 'views/board.html',
-					controller: 'boardCtrl'
+					controller: 'BoardController'
 				})
 
 				.otherwise({
-					redirectTo: '/'
+					redirectTo: '/',
+					templateUrl: 'views/home.html'
 				});
 
 		}

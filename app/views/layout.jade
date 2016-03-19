@@ -3,7 +3,7 @@ html(ng-app='app')
 	head
 		title Ui Nui Uni Nuni
 		link(rel='stylesheet', href='style.min.css')
-	body(ng-view)
+	body(ng-controller="MainController")
 		header
 			if user
 				a(href='/signout') Logout
