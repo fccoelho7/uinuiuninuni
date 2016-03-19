@@ -1,0 +1,14 @@
+doctype
+html(ng-app='app')
+	head
+		title Ui Nui Uni Nuni
+		link(rel='stylesheet', href='style.min.css')
+	body(ng-view)
+		header
+			if user
+				a(href='/signout') Logout
+
+		block content
+
+		footer
+			script(src='build.min.js')

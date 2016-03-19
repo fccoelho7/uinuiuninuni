@@ -1,0 +1,15 @@
+extends layout
+
+block content
+	.container
+		.login
+			h2 Signup
+			form(class='form-signup', action='/signup', method='POST')
+				input(type='text', name='username', placeholder='Username', required, autofocus)
+				input(type='password', name='password', placeholder='Password', required)
+				input(type='email', name='email', placeholder='Email', required)
+				button(type='submit') Signup
+
+			#message
+			if message
+				p #{message}

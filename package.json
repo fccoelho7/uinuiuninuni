@@ -1,0 +1,28 @@
+{
+  "name": "myseed",
+  "version": "0.0.1",
+  "description": "Basic structure for MEAN app's.",
+  "main": "Gruntfile.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.14.2",
+    "connect-flash": "^0.1.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "grunt": "^0.4.5",
+    "grunt-concurrent": "^2.2.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-nodemon": "^0.4.1",
+    "jade": "^1.11.0",
+    "load-grunt-tasks": "^3.4.1",
+    "mongoose": "^4.3.7",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.0",
+    "passport-google-oauth2": "^0.1.6",
+    "passport-local": "^1.0.0"
+  }
+}
