@@ -9,29 +9,26 @@
 
 	function Auth($rootScope, $http) {
 
-		var _user = {};
-		var _isLogged = false;
-
 		function _setUser(data) {
-			_user = data;
-			_isLogged = true;
+			$rootScope.user = data;
+			$rootScope.user.isLogged = true;
 			return;
 		}
 
 		function _unsetUser() {
-			_user = {};
-			_isLogged = false;
+			$rootScope.user = null;
 			return;
 		}
 
 		var getUser = function() {
-			if (_isLogged) {
-				return _user;
-			}
-			return 'You are not logged!';
+			return ($rootScope.user) ? $rootScope.user : 'You are not logged!';
 		}
 
 		var isLogged = function() {
+			return ($rootScope.user) ? true : false;
+		}
+
+		var checkUser = function() {
 			return $http.get('/user')
 				.then(function(res) {
 					_setUser(res.data);
@@ -44,7 +41,8 @@
 
 		return {
 			getUser: getUser,
-			isLogged: isLogged
+			isLogged: isLogged,
+			checkUser: checkUser
 		};
 	}
 

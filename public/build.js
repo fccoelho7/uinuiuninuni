@@ -31642,7 +31642,10 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				})
 
 				.when('/login', {
-					templateUrl: 'views/login.html'
+					templateUrl: 'views/login.html',
+					resolve: {
+						isLogged: isLogged
+					}
 				})
 
 				.otherwise({
@@ -31651,12 +31654,22 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				});
 
 			function User(Auth, $location) {
-				Auth.isLogged()
+				Auth.checkUser()
 					.then(function(res) {
 						if (!res) {
-							return $location.path('/login');
+							$location.path('/login');
+							return;
 						}
+						console.log(Auth.getUser());
+						return Auth.getUser();
 					});
+			}
+
+			function isLogged(Auth, $location) {
+				if (Auth.isLogged()) {
+					$location.path('/');
+					return;
+				}
 			}
 
 		}
@@ -31704,29 +31717,26 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 	function Auth($rootScope, $http) {
 
-		var _user = {};
-		var _isLogged = false;
-
 		function _setUser(data) {
-			_user = data;
-			_isLogged = true;
+			$rootScope.user = data;
+			$rootScope.user.isLogged = true;
 			return;
 		}
 
 		function _unsetUser() {
-			_user = {};
-			_isLogged = false;
+			$rootScope.user = null;
 			return;
 		}
 
 		var getUser = function() {
-			if (_isLogged) {
-				return _user;
-			}
-			return 'You are not logged!';
+			return ($rootScope.user) ? $rootScope.user : 'You are not logged!';
 		}
 
 		var isLogged = function() {
+			return ($rootScope.user) ? true : false;
+		}
+
+		var checkUser = function() {
 			return $http.get('/user')
 				.then(function(res) {
 					_setUser(res.data);
@@ -31739,7 +31749,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 		return {
 			getUser: getUser,
-			isLogged: isLogged
+			isLogged: isLogged,
+			checkUser: checkUser
 		};
 	}
 

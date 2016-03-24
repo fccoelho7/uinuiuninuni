@@ -49,7 +49,10 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/user', function(req, res) {
-		if (req.user) return res.json(req.user);
+		if (req.user) {
+			return res.json(req.user)
+		}
+		return res.status(403).json({error: "You're not logged in!"});
 	});
 
 	// Facebook Routes

@@ -18,7 +18,10 @@
 				})
 
 				.when('/login', {
-					templateUrl: 'views/login.html'
+					templateUrl: 'views/login.html',
+					resolve: {
+						isLogged: isLogged
+					}
 				})
 
 				.otherwise({
@@ -27,12 +30,22 @@
 				});
 
 			function User(Auth, $location) {
-				Auth.isLogged()
+				Auth.checkUser()
 					.then(function(res) {
 						if (!res) {
-							return $location.path('/login');
+							$location.path('/login');
+							return;
 						}
+						console.log(Auth.getUser());
+						return Auth.getUser();
 					});
+			}
+
+			function isLogged(Auth, $location) {
+				if (Auth.isLogged()) {
+					$location.path('/');
+					return;
+				}
 			}
 
 		}
