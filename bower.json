@@ -5,23 +5,11 @@
   "authors": [
     "Fabio Carvalho"
   ],
-  "license": "ISC",
-  "moduleType": [],
-  "homepage": "",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "install": {
     "path": "public/libs"
   },
   "devDependencies": {
-    "jquery": "latest",
     "angular": "latest",
-    "angular-route": "latest",
-    "angular-sanitize": "latest"
+    "angular-route": "latest"
   }
 }

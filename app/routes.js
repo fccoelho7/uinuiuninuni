@@ -48,6 +48,10 @@ module.exports = function(app, passport) {
 		res.render('account', { user: req.user });
 	});
 
+	app.get('/user', function(req, res) {
+		if (req.user) return res.json(req.user);
+	});
+
 	// Facebook Routes
 
 	app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));

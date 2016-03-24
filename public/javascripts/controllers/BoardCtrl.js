@@ -3,12 +3,12 @@
 
 	angular
 		.module('app')
-		.controller('BoardController',BoardController);
+		.controller('BoardController', BoardController);
 
-		BoardController.$inject = ['$scope'];
+	BoardController.$inject = ['$scope'];
 
-		function BoardController($scope) {
-			$scope.hello = '/Board :)';
-		}
+	function BoardController($scope) {
+		$scope.hello = '/Board :)';
+	}
 
 })();

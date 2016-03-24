@@ -60,6 +60,7 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+
 		nodemon: {
 			dev: {
 				script: 'app/',
@@ -76,21 +77,23 @@ module.exports = function(grunt) {
 				logConcurrentOutput: true
 			},
 			tasks: ['nodemon', 'watch']
-		},	
+		},
+
 		concat: {
 			options: {
 				separator: ';\n',
 			},
 			dist: {
 				src: [
-					'<%= dirs.libs %>/*/*.js',
-					'<%= dirs.plugins %>/*/*.js',
+					'<%= dirs.libs %>/*.js',
+					'<%= dirs.plugins %>/*.js',
 					'<%= dirs.js %>/app/*.js',
 					'<%= dirs.js %>/*/*.js'
 				],
 				dest: 'public/build.js',
 			},
-		},	
+		},
+
 		// watch for changes and trigger sass, jshint, uglify and livereload browser
 		watch: {
 			sass: {

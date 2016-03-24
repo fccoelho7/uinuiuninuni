@@ -24,56 +24,69 @@ module.exports = function(passport) {
 
 	// Local Strategy
 
-	passport.use('login', new LocalStrategy(
+	passport.use('login', new LocalStrategy({
+			passReqToCallback: true
+		},
 		function(req, username, password, done) {
-			User.findOne({ username: username }, function(err, user) {
+			process.nextTick(function() {
+				User.findOne({'username': username}, function(err, user) {
 
-				if (err) return done(err);
+					if (err) return done(err);
 
-				if (!user) {
-					return done(null, false, req.flash('message', 'User incorrect!'));
-				}
+					if (!user) {
+						return done(null, false, req.flash('message', 'User incorrect!'));
+					}
 
-				if (!isValidPassword(user, password)) {
-					return done(null, false, req.flash('message', 'Password incorrect!'));
-				}
+					if (!isValidPassword(user, password)) {
+						return done(null, false, req.flash('message', 'Password incorrect!'));
+					}
 
-				return done(null, user);
+					return done(null, user);
+				});
 			});
 		}
 	));
 
-	passport.use('register', new LocalStrategy(
+	passport.use('register', new LocalStrategy({
+			passReqToCallback: true
+		},
 		function(req, username, password, done) {
-			User.findOne({'username':username}, function(err, user) {
+			process.nextTick(function() {
+				User.findOne({'username': username}, function(err, user) {
 
-				if (err) return done(err);
+					if (err) return done(err);
 
-				if (user) {
-					return done(null, false, req.flash('message', 'User exists!'));
-				}
+					if (user) {
+						return done(null, false, req.flash('message', 'User exists!'));
+					}
 
-				var user = new User({
-					username: username,
-					password: createHash(password),
-					email: req.body.email
-				});
+					var user = new User({
+						username: username,
+						password: createHash(password),
+						email: req.body.email
+					});
 
-				user.save(function(err) {
-					if (err) throw err;
-					return done(null, user);
+					user.save(function(err) {
+						if (err) throw err;
+						return done(null, user);
+					});
+
 				});
 			});
 		})
 	);
 
-	passport.use('update', new LocalStrategy(
+	passport.use('update', new LocalStrategy({
+			passReqToCallback: true
+		},
 		function(req, username, password, done) {
-			User.update({'username': username}, req.body, function(err) {
+			process.nextTick(function() {
+				User.update({'username': username}, req.body, function(err) {
 
-				if (err) throw err;
+					if (err) throw err;
 
-				return done(null, req.body);
+					return done(null, req.body);
+				});
 			});
 		}
 	));
@@ -86,26 +99,25 @@ module.exports = function(passport) {
 			callbackURL: configAuth.facebookAuth.callbackURL
 		},
 		function(token, refreshToken, profile, done) {
-			User.findOne({'facebook.id': profile.id}, function(err, user) {
+			process.nextTick(function() {
+				User.findOne({'facebook.id': profile.id}, function(err, user) {
 
-				if (err) throw err;
-
-				if (user) return done(null, user);
-
-				var user = new User();
-
-				user.name = profile.displayName;
-				user.facebook.id = profile.id;
-				user.facebook.token = token;
-
-				user.save(function(err) {
 					if (err) throw err;
-					return done(null, user);
+
+					if (user) return done(null, user);
+
+					var user = new User();
+
+					user.name = profile.displayName;
+					user.facebook.id = profile.id;
+					user.facebook.token = token;
+
+					user.save(function(err) {
+						if (err) throw err;
+						return done(null, user);
+					});
 				});
-
-			})
+			});
 		}
-
 	));
-
 }

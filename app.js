@@ -1,20 +1,20 @@
 'use strict';
 
-var express     = require('express')
-	, app           = express()
-	, port          = process.env.PORT || 8080
-	, configD      = require('./app/config/db')
-	, bodyParser    = require('body-parser')
-	, morgan        = require('morgan')
-	, mongoose      = require('mongoose')
-	, session       = require('express-session')
-	, passport      = require('passport')
-	, flash         = require('connect-flash');
+var express    = require('express')
+	, app        = express()
+	, port       = process.env.PORT || 8080
+	, configDB   = require('./app/config/db')
+	, bodyParser = require('body-parser')
+	, morgan     = require('morgan')
+	, mongoose   = require('mongoose')
+	, session    = require('express-session')
+	, passport   = require('passport')
+	, flash      = require('connect-flash');
 
 // Database Config
-mongoose.connect(configD.url);
+mongoose.connect(configDB.url);
 
-//Passport Config
+// Passport Config
 require('./app/config/passport')(passport);
 
 // Set up Express Application
@@ -39,7 +39,7 @@ app.use(flash());
 
 // Routes
 app.get('/', function(err, res) {
-	res.render('home', {});
+	res.render('home');
 });
 require('./app/routes')(app, passport);
 
