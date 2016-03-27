@@ -9,7 +9,7 @@ var express    = require('express')
 	, mongoose   = require('mongoose')
 	, session    = require('express-session')
 	, passport   = require('passport')
-	, flash      = require('connect-flash');
+	, jwt        = require('jsonwebtoken');
 
 // Database Config
 mongoose.connect(configDB.url);
@@ -31,17 +31,16 @@ app.set('view engine', 'jade');
 app.use(session({
 	secret: 'cookie_secret',
 	saveUninitialized: true,
-	resave: true,
+	resave: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 // Routes
 app.get('/', function(err, res) {
 	res.render('home');
 });
-require('./app/routes')(app, passport);
+require('./app/routes')(app, passport, jwt);
 
 // Listen
 app.listen(port);

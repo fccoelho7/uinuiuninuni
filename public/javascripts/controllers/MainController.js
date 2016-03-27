@@ -5,10 +5,14 @@
 		.module('app')
 		.controller('MainController', MainController);
 
-	MainController.$inject = ['$scope'];
+	MainController.$inject = ['$scope', '$location'];
 
-	function MainController($scope) {
-		$scope.hello = "Home :)"
+	function MainController($scope, $location) {
+
+		$scope.go = function(href) {
+			$location.path(href);
+		}
+
 	}
 
 })();

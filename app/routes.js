@@ -1,58 +1,59 @@
+var User = require('./models/user');
+
 module.exports = function(app, passport) {
 
-	var isAuthenticated = function(req, res, next) {
-		if (req.isAuthenticated()) { return next() };
-		res.redirect('/login');
-	}
-
 	app.post('/login',
-		passport.authenticate('login', {
-			successRedirect: '/account',
-			failureRedirect: '/login',
-			failureFlash: true
-		})
-	);
+		passport.authenticate('login'),
+		function(req, res) {
+			res.status(200).json({
+				id: req.user._id,
+				username: req.user.username,
+				email: req.user.email
+			});
+		});
 
-	app.post('/signup',
-		passport.authenticate('register', {
-			successRedirect: '/account',
-			failureRedirect: '/signup',
-			failureFlash: true
-		})
-	);
+	app.post('/register',
+		passport.authenticate('register'),
+		function(req, res) {
+			res.status(200).json({
+				id: req.user._id,
+				username: req.user.username,
+				email: req.user.email
+			});
+		});
 
-	app.post('/account',
-		passport.authenticate('update', {
-			successRedirect: '/account',
-			failureRedirect: '/account',
-			failureFlash: true
-		})
-	);
+	app.post('/user/board', function(req, res) {
+		if (!req.user) {
+			return res.status(401).json({ success: false, message: "You aren't logged!" });
+		}
 
-	app.get('/login', function(req, res) {
-		if (req.isAuthenticated()) return res.redirect('/account');
-		res.render('login', { message: req.flash('message') });
-	});
+		var board = JSON.stringify(req.body);
 
-	app.get('/signup', function(req, res) {
-		if (req.isAuthenticated()) return res.redirect('/account');
-		res.render('register', { message: req.flash('message') });
-	});
+		User.update({ '_id': req.user._id }, { board: board }, function(err, data) {
+			if (err) {
+				return res.status(500).json({ success: false, message: err });
+			}
+			return res.status(200).json({ success: true, message: 'User succesfull edited!' });
+		});
 
-	app.get('/signout', function(req, res) {
-		req.logout();
-		res.redirect('/login');
-	});
-
-	app.get('/account', isAuthenticated, function(req, res){
-		res.render('account', { user: req.user });
 	});
 
 	app.get('/user', function(req, res) {
 		if (req.user) {
-			return res.json(req.user)
+			return res.status(200).json({
+				id: req.user._id,
+				username: req.user.username,
+				email: req.user.email,
+				board: req.user.board,
+				isLogged: true
+			});
 		}
-		return res.status(403).json({error: "You're not logged in!"});
+		return res.status(403).json({ error: "You aren't logged!" });
+	});
+
+	app.get('/logout', function(req, res) {
+		req.logout();
+		return res.status(200).json({ success: true, message: 'Bye!' });
 	});
 
 	// Facebook Routes

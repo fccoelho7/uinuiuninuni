@@ -1,0 +1,74 @@
+
+ul[dnd-list],
+ul[dnd-list] > li {
+	position: relative;
+}
+
+ul[dnd-list] {
+	min-height: 42px;
+	padding-left: 0px;
+}
+
+ul[dnd-list] .dndDraggingSource {
+	display: none;
+}
+
+ul[dnd-list] .dndPlaceholder {
+	display: block;
+	background-color: $colorQuaternary;
+	min-height: 47px;
+}
+
+ul[dnd-list] li {
+	background-color: #fff;
+	border: 1px solid $colorQuaternary;
+	border-radius: 5px;
+	box-shadow: 0 1px 0px $colorQuaternary;
+	cursor: move;
+	display: block;
+	margin: 5px;
+	padding: 10px 15px;
+	position: relative;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+
+	.description {
+		color: #CCC;
+		font-size: 14px;
+	}
+
+	.trash {
+		background-color: rgba(255, 255, 255, 0.8);
+		border-radius: 100%;
+		color: #CCC;
+		cursor: pointer;
+		float: right;
+		font-size: 20px;
+		height: 45px;
+		opacity: 0;
+		padding: 7px 13px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		visibility: hidden;
+		width: 45px;
+		@include transition();
+	}
+
+	&:hover .trash {
+		visibility: visible;
+		opacity: 1;
+		@include transition();
+	}
+}
+
+// ul[dnd-list] li.selected {
+// 	background-color: $colorSecondary;
+// 	color: #FFF;
+
+// 	.trash {
+// 		color: #FFF;
+// 	}
+// }

@@ -1,10 +1,10 @@
 module.exports = function(passport) {
 
-	var LocalStrategy			= require('passport-local').Strategy
-		, FacebookStrategy	= require('passport-facebook').Strategy
-		, bCrypt        		= require('bcrypt-nodejs')
-		, User         			= require('../models/user')
-		, configAuth				= require('./auth');
+	var LocalStrategy    = require('passport-local').Strategy
+		, FacebookStrategy = require('passport-facebook').Strategy
+		, bCrypt           = require('bcrypt-nodejs')
+		, User             = require('../models/user')
+		, configAuth       = require('./auth');
 
 	var createHash = function(password){
 		return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
@@ -28,17 +28,20 @@ module.exports = function(passport) {
 			passReqToCallback: true
 		},
 		function(req, username, password, done) {
+
 			process.nextTick(function() {
 				User.findOne({'username': username}, function(err, user) {
 
 					if (err) return done(err);
 
 					if (!user) {
-						return done(null, false, req.flash('message', 'User incorrect!'));
+						console.log('User incorrect!');
+						return done(null, false, { message: 'User incorrect!' });
 					}
 
 					if (!isValidPassword(user, password)) {
-						return done(null, false, req.flash('message', 'Password incorrect!'));
+						console.log('Password incorrect!');
+						return done(null, false, { message: 'Password incorrect!' });
 					}
 
 					return done(null, user);
@@ -57,7 +60,7 @@ module.exports = function(passport) {
 					if (err) return done(err);
 
 					if (user) {
-						return done(null, false, req.flash('message', 'User exists!'));
+						return done(null, false, { message: 'User exists!' });
 					}
 
 					var user = new User({
@@ -75,21 +78,6 @@ module.exports = function(passport) {
 			});
 		})
 	);
-
-	passport.use('update', new LocalStrategy({
-			passReqToCallback: true
-		},
-		function(req, username, password, done) {
-			process.nextTick(function() {
-				User.update({'username': username}, req.body, function(err) {
-
-					if (err) throw err;
-
-					return done(null, req.body);
-				});
-			});
-		}
-	));
 
 	// Facebook Strategy
 

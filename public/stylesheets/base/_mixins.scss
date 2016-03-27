@@ -7,3 +7,15 @@
 	::-moz-placeholder 			{ @content; }
 	:-ms-input-placeholder 		{ @content; }
 }
+
+@mixin transition($property:all .2s){
+	-webkit-transition: $property;
+		-ms-transition: $property;
+			transition: $property;
+}
+
+@mixin transform($property) {
+	-webkit-transform: $property;
+		-ms-transform: $property;
+			transform: $property;
+}

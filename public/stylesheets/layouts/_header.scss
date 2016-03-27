@@ -1,4 +1,40 @@
+.header {
+	.header-bar {
+		background-color: #FFF;
+		box-shadow: 0 0 3px #333;
+		height: 50px;
+		line-height: 50px;
+		margin-bottom: 50px;
+		padding: 0 20px;
+		text-align: right;
 
-body {
-	background-color: #FFF;
+		a {
+			color: $colorQuinary;
+		}
+
+		.left {
+			float: left;
+		}
+
+		.right {
+			float: right;
+			font-size: 16px;
+
+			a {
+				font-size: 18px;
+			}
+
+			> * {
+				margin: 0 5px;
+			}
+		}
+
+		.main-title {
+			color: $colorQuinary;
+			font-size: 26px;
+			font-weight: 400;
+			line-height: 50px;
+			margin: 0;
+		}
+	}
 }

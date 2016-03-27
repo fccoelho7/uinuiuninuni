@@ -8,9 +8,9 @@ input[type='search'],
 input[type='tel'],
 input[type='text'],
 input[type='url'],
+input[type='date'],
 textarea,
 select {
-	appearance: none;
 	background-color: transparent;
 	border: 0.1rem solid $colorQuaternary;
 	border-radius: 0.4rem;
@@ -41,7 +41,6 @@ textarea {
 label,
 legend {
 	font-size: 1.6rem;
-	font-weight: 700;
 	display: block;
 	margin-bottom: 0.5rem;
 }

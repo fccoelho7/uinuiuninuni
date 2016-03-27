@@ -1,0 +1,21 @@
+.login,
+.register {
+	background-color: #FFF;
+	box-shadow: 0 0 3px #333;
+	margin: 30px auto;
+	max-width: 500px;
+	padding: 20px;
+	width: 100%;
+
+	.form-buttons {
+		text-align: right;
+	}
+
+	.facebook-signup {
+		background-color: #3B5998;
+		border-radius: 5px;
+		color: #FFF;
+		display: block;
+		padding: 10px;
+	}
+}

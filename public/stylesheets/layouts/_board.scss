@@ -1,0 +1,41 @@
+.board {
+	@extend %clearFix;
+	background-color: #FFF;
+	border-radius: 5px;
+	padding: 20px;
+	margin-bottom: 50px;
+	height: 100%;
+
+	h3 {
+		border-bottom: 1px solid $colorQuaternary;
+		border-radius: 5px 5px 0 0;
+		font-size: 20px;
+		margin-bottom: 0;
+		padding: 10px;
+	}
+
+	ul,
+	li {
+		margin-bottom: 0;
+	}
+
+	.board-list {
+		border: 1px solid $colorQuaternary;
+		border-radius: 5px;
+		margin-bottom: 20px;
+		
+	}
+
+	@media(min-width: $tablet) {
+
+		.board-list {
+			float: left;
+			width: 49%;
+
+			&:nth-child(2n+1) {
+				margin-right: 2%;
+			}
+		}
+
+	}
+}

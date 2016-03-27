@@ -1,1 +1,30 @@
-<h2>{{hello}}</h2>
+<div ng-include="'views/header.html'"></div>
+
+<div class="container">
+
+	<div class="board">
+		<div class="board-list" ng-repeat="(listName, list) in models.lists">
+			<h3><strong>{{listName}}</strong></h3>
+			<ul dnd-list="list">
+				<li ng-repeat="item in list"
+					dnd-draggable="item"
+					dnd-moved="list.splice($index, 1)"
+					dnd-effect-allowed="move"
+					dnd-selected="models.selected = item"
+					ng-class="{'selected': models.selected === item}"
+					>
+					<span class="icon-tick"></span>
+					{{item.label}}
+					<div class="trash" ng-click="removeItem(listName, $index)">
+						<span class="icon-trash"></span>
+					</div>
+				</li>
+				<form class="board-form" ng-submit="addItem(listName, boardForm.item)">
+					<input class="board-form-label" type="text" ng-model="boardForm.item.label" placeholder="Insira uma tarefa e pressione ENTER..">
+					<!-- <input class="board-form-until" type="date" ng-model="boardForm.item.until"> -->
+				</form>
+			</ul>
+		</div>
+	</div>
+
+</div>
