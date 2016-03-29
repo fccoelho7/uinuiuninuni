@@ -2,19 +2,27 @@
 	<div class="header-bar">
 		<div class="left">
 			<h1 class="main-title">
-				<span class="icon-leaf"></span> 
+				<i class="icon-leaf"></i> 
 				UiNuiUniNuni
 			</h1>
 		</div>
 		<div class="right">
-			<div class="user-info">
-				<span class="icon-user-outline"></span>
-				{{user}}
-				| 
-				<a href="#/logout">
-					<span class="icon-power-outline"></span>
-				</a>
-			</div>
+			<ul class="user-info">
+				<li><i class="icon-user-outline"></i> {{user}}</li>
+				<li>
+					<a href="javascript:;"><i class="icon-message"></i></a>
+					<ul class="sub">
+						<li><div class="message-header">Notificações</div></li>
+						<li>
+							<div class="message-item">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis.</div>
+						</li>
+						<li>
+							<div class="message-item">Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis.</div>
+						</li>
+					</ul>
+				</li>
+				<li><a href="#/logout"><i class="icon-power-outline"></i></a></li>
+			</ul>
 		</div>
 	</div>
 </header>
