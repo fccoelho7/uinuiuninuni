@@ -42,7 +42,7 @@
 		}
 
 		$scope.$watch('models', function(model) {
-			BoardService.updateBoard(JSON.stringify(model))
+			BoardService.updateBoard(angular.toJson(model))
 				.success(function(data) {
 					console.log(data.message);
 				})

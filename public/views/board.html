@@ -19,8 +19,8 @@
 						<span class="icon-trash"></span>
 					</div>
 				</li>
-				<form class="board-form" ng-submit="addItem(listName, boardForm.item)">
-					<input class="board-form-label" type="text" ng-model="boardForm.item.label" placeholder="Insira uma tarefa e pressione ENTER..">
+				<form name="boardForm" class="board-form" ng-submit="addItem(listName, item)">
+					<input class="board-form-label" name="item.label" type="text" ng-model="item.label" placeholder="Insira uma tarefa e pressione ENTER..">
 					<!-- <input class="board-form-until" type="date" ng-model="boardForm.item.until"> -->
 				</form>
 			</ul>
