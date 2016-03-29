@@ -5,9 +5,9 @@
 		.module('app')
 		.controller('BoardController', BoardController);
 
-	BoardController.$inject = ['$scope', 'BoardService', 'board'];
+	BoardController.$inject = ['$scope', 'BoardService', 'user'];
 
-	function BoardController($scope, BoardService, board) {
+	function BoardController($scope, BoardService, user) {
 
 		var boardDefault = {
 			selected: null,
@@ -27,7 +27,9 @@
 			}
 		};
 
-		$scope.models = (board) ? JSON.parse(board) : boardDefault;
+		$scope.user = user.username;
+
+		$scope.models = (user.board) ? JSON.parse(user.board) : boardDefault;
 
 		$scope.addItem = function(listName, item) {
 			$scope.models.lists[listName].push({
@@ -42,7 +44,7 @@
 		$scope.$watch('models', function(model) {
 			BoardService.updateBoard(JSON.stringify(model))
 				.success(function(data) {
-					// console.info(data);
+					console.log(data.message);
 				})
 				.error(function(status, data) {
 					console.error(status, data);

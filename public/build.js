@@ -32199,14 +32199,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 	angular
 		.module('app', ['ngRoute', 'dndLists'])
 		.config();
-		// .run(function ($rootScope, $location, AuthService) {
-		// 	$rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-		// 		console.log('oi');
-		// 		if (nextRoute.access.requiredLogin && !AuthService.isLogged) {
-		// 			$location.path('/login');
-		// 		}
-		// 	});
-		// });
 
 })();
 ;
@@ -32226,15 +32218,12 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 					controller: 'BoardController',
 					resolve: {
 						user: function(AuthService, $location) {
-							if (!AuthService.isLogged) {
-								$location.path('/login');
-								return;
-							}
-						},
-						board: function(BoardService) {
-							return BoardService.getBoard()
+							return AuthService.getUser()
 								.then(function(user) {
-									return user.data.board;
+									return user.data;
+								})
+								.catch(function(err) {
+									$location.path('/login');
 								});
 						}
 					}
@@ -32254,13 +32243,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 				.when('/logout', {
 					resolve: {
-						logout: function(AuthService, $window, $location) {
+						logout: function(AuthService, $location) {
 							return AuthService.logout()
 								.then(function(data) {
-									if (AuthService.isLogged) {
-										AuthService.isLogged = false;
-										delete $window.sessionStorage.user;
-									}
 									$location.path('/login');
 								});
 						}
@@ -32272,10 +32257,15 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				});
 
 			function isLogged(AuthService, $location) {
-				if (AuthService.isLogged) {
-					$location.path('/board');
-					return;
-				}
+				return AuthService.getUser()
+					.then(function(user) {
+						console.log(user);
+						$location.path('/board');
+						return;
+					})
+					.catch(function(err) {
+						// console.log(err);
+					});
 			}
 
 		}
@@ -32289,9 +32279,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		.module('app')
 		.controller('BoardController', BoardController);
 
-	BoardController.$inject = ['$scope', 'BoardService', 'board'];
+	BoardController.$inject = ['$scope', 'BoardService', 'user'];
 
-	function BoardController($scope, BoardService, board) {
+	function BoardController($scope, BoardService, user) {
 
 		var boardDefault = {
 			selected: null,
@@ -32311,7 +32301,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 			}
 		};
 
-		$scope.models = (board) ? JSON.parse(board) : boardDefault;
+		$scope.user = user.username;
+
+		$scope.models = (user.board) ? JSON.parse(user.board) : boardDefault;
 
 		$scope.addItem = function(listName, item) {
 			$scope.models.lists[listName].push({
@@ -32326,7 +32318,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		$scope.$watch('models', function(model) {
 			BoardService.updateBoard(JSON.stringify(model))
 				.success(function(data) {
-					// console.info(data);
+					console.log(data.message);
 				})
 				.error(function(status, data) {
 					console.error(status, data);
@@ -32362,11 +32354,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		.module('app')
 		.controller('UserController', UserController);
 
-	UserController.$inject = ['$scope', '$location', '$window', 'AuthService'];
+	UserController.$inject = ['$scope', '$location', 'AuthService'];
 
-	function UserController($scope, $location, $window, AuthService) {
-
-		$scope.user = AuthService.getUser();
+	function UserController($scope, $location, AuthService) {
 
 		$scope.login = function(username, password) {
 
@@ -32377,8 +32367,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 			AuthService.login(username, password)
 				.success(function(data) {
-					AuthService.isLogged = true;
-					$window.sessionStorage.user = JSON.stringify(data);
 					$location.path('/board');
 				})
 				.error(function(status, data) {
@@ -32389,8 +32377,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		$scope.register = function(username, password, email) {
 			AuthService.register(username, password, email)
 				.success(function(data) {
-					AuthService.isLogged = true;
-					$window.sessionStorage.user = JSON.stringify(data);
 					$location.path('/board');
 				})
 				.error(function(status, data) {
@@ -32413,12 +32399,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 	function AuthService($http, $window) {
 
-		var isLogged = false;
-
 		var getUser = function() {
-			if ($window.sessionStorage.user) {
-				return JSON.parse($window.sessionStorage.user);
-			}
+			return $http.get('/user');
 		}
 
 		var login = function(username, password) {
@@ -32441,7 +32423,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		}
 
 		return {
-			isLogged: isLogged,
 			getUser: getUser,
 			login: login,
 			logout: logout,
@@ -32462,16 +32443,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 	function BoardService($http) {
 
-		var getBoard = function() {
-			return $http.get('/user');
-		}
-
 		var updateBoard = function(data) {
 			return $http.post('/user/board', data);
 		}
 
 		return {
-			getBoard: getBoard,
 			updateBoard: updateBoard
 		};
 	}

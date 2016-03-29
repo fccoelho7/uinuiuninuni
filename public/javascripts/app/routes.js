@@ -14,15 +14,12 @@
 					controller: 'BoardController',
 					resolve: {
 						user: function(AuthService, $location) {
-							if (!AuthService.isLogged) {
-								$location.path('/login');
-								return;
-							}
-						},
-						board: function(BoardService) {
-							return BoardService.getBoard()
+							return AuthService.getUser()
 								.then(function(user) {
-									return user.data.board;
+									return user.data;
+								})
+								.catch(function(err) {
+									$location.path('/login');
 								});
 						}
 					}
@@ -42,13 +39,9 @@
 
 				.when('/logout', {
 					resolve: {
-						logout: function(AuthService, $window, $location) {
+						logout: function(AuthService, $location) {
 							return AuthService.logout()
 								.then(function(data) {
-									if (AuthService.isLogged) {
-										AuthService.isLogged = false;
-										delete $window.sessionStorage.user;
-									}
 									$location.path('/login');
 								});
 						}
@@ -60,10 +53,15 @@
 				});
 
 			function isLogged(AuthService, $location) {
-				if (AuthService.isLogged) {
-					$location.path('/board');
-					return;
-				}
+				return AuthService.getUser()
+					.then(function(user) {
+						console.log(user);
+						$location.path('/board');
+						return;
+					})
+					.catch(function(err) {
+						// console.log(err);
+					});
 			}
 
 		}

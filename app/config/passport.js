@@ -28,7 +28,6 @@ module.exports = function(passport) {
 			passReqToCallback: true
 		},
 		function(req, username, password, done) {
-
 			process.nextTick(function() {
 				User.findOne({'username': username}, function(err, user) {
 

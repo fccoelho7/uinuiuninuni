@@ -9,12 +9,8 @@
 
 	function AuthService($http, $window) {
 
-		var isLogged = false;
-
 		var getUser = function() {
-			if ($window.sessionStorage.user) {
-				return JSON.parse($window.sessionStorage.user);
-			}
+			return $http.get('/user');
 		}
 
 		var login = function(username, password) {
@@ -37,7 +33,6 @@
 		}
 
 		return {
-			isLogged: isLogged,
 			getUser: getUser,
 			login: login,
 			logout: logout,
