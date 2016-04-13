@@ -23,6 +23,13 @@
 		border: 1px solid $colorQuaternary;
 		border-radius: 5px;
 		margin-bottom: 20px;
+
+		.item-expires {
+			.item-expires-date {
+				font-size: 12px;
+				font-weight: bold;
+			}
+		}
 		
 	}
 

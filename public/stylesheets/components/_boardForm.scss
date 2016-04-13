@@ -1,10 +1,38 @@
 .board-form {
-	margin-bottom: 0;
+	border: 1px solid $colorQuaternary;
+	border-radius: 5px;
+	margin: 20px 5px 5px;
 	padding: 5px;
 
 	input {
-		display: inline-block;
+		border: none;
+		border-radius: 0;
+		float: left;
 		font-size: 14px;
 		margin: 0;
+
+		&:focus {
+			border: none;
+		}
+	}
+
+	.board-form-label {
+		width: 50%;
+	}
+
+	.board-form-expires {
+		color: $colorSecondary;
+		border-left: 1px solid $colorQuaternary;
+		width: 35%;
+
+		&:focus {
+			border-left: 1px solid $colorQuaternary;
+		}
+	}
+
+	.board-form-submit {
+		padding: 0 10px;
+		margin: 0;
+		width: 15%;
 	}
 }

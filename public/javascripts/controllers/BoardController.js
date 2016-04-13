@@ -9,6 +9,8 @@
 
 	function BoardController($scope, BoardService, user) {
 
+		generateMessages();
+
 		var boardDefault = {
 			selected: null,
 			lists: {
@@ -31,14 +33,15 @@
 
 		$scope.models = (user.board) ? JSON.parse(user.board) : boardDefault;
 
-		$scope.addItem = function(listName, item) {
-			$scope.models.lists[listName].push({
-				label: item.label
+		$scope.addItem = function(prop, item) {
+			$scope.models.lists[prop].push({
+				label: item.label,
+				expires: new Date(item.expires).getTime()
 			});
 		}
 
-		$scope.removeItem = function(listName, $i) {
-			$scope.models.lists[listName].splice($i, 1);
+		$scope.removeItem = function(prop, $i) {
+			$scope.models.lists[prop].splice($i, 1);
 		}
 
 		$scope.$watch('models', function(model) {
@@ -50,6 +53,38 @@
 					console.error(status, data);
 				});
 		}, true);
+
+		function generateMessages() {
+			var board = angular.fromJson(user.board)
+			  , lists = board.lists
+			  , arr   = [];
+
+			for (var prop in lists) {
+				for (var val in lists[prop]) {
+					var item 		 = lists[prop][val]
+						, expires  = item.expires
+						, now  		 = new Date().getTime()
+						, ONE      = (86400 * 1000)
+						, TWO      = (172800 * 1000)
+					;
+
+					if (expires > now) {
+
+						if (expires < (now + ONE)) {
+							item.status = 1;
+							arr.push(item);
+						}
+
+						if (expires > (now + ONE) && expires < (now + TWO)) {
+							item.status = 2;
+							arr.push(item);
+						}
+					}
+				}
+			}
+
+			return $scope.messages = arr;
+		}
 	}
 
 })();

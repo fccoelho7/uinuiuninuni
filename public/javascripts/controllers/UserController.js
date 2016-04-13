@@ -9,6 +9,8 @@
 
 	function UserController($scope, $location, AuthService) {
 
+		$scope.message = null;
+
 		$scope.login = function(username, password) {
 
 			if (username == undefined || password == undefined) {
@@ -20,8 +22,8 @@
 				.success(function(data) {
 					$location.path('/board');
 				})
-				.error(function(status, data) {
-					console.error(status, data);
+				.error(function(data, status) {
+					$scope.message = data.message;
 				});
 		}
 
@@ -30,8 +32,8 @@
 				.success(function(data) {
 					$location.path('/board');
 				})
-				.error(function(status, data) {
-					console.error(status, data);
+				.error(function(data, status) {
+					$scope.message = data.message;
 				});
 		}
 

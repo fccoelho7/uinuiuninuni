@@ -12,8 +12,7 @@ module.exports = function(grunt) {
 		// setting folder templates
 		dirs: {
 			js: 'public/javascripts',
-			libs: 'public/libs',
-			plugins: 'public/plugins',
+			vendor: 'public/vendor',
 			sass: 'public/stylesheets',
 			images: 'public/images',
 			fonts: 'public/fonts'
@@ -85,8 +84,8 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: [
-					'<%= dirs.libs %>/*.js',
-					'<%= dirs.plugins %>/*.js',
+					'<%= dirs.vendor %>/angular.js',
+					'<%= dirs.vendor %>/*.js',
 					'<%= dirs.js %>/app/*.js',
 					'<%= dirs.js %>/*/*.js'
 				],
@@ -104,7 +103,7 @@ module.exports = function(grunt) {
 			},
 			js: {
 				files: [
-					'<%= dirs.libs %>/**',
+					'<%= dirs.vendor %>/**',
 					'<%= dirs.js %>/**'
 				],
 				tasks: ['concat', 'uglify']

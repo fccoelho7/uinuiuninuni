@@ -2,7 +2,6 @@
 	'use strict';
 
 	angular
-		.module('app', ['ngRoute', 'dndLists'])
-		.config();
+		.module('app', ['ngRoute', 'dndLists']);
 
 })();

@@ -8,8 +8,7 @@ var express    = require('express')
 	, morgan     = require('morgan')
 	, mongoose   = require('mongoose')
 	, session    = require('express-session')
-	, passport   = require('passport')
-	, jwt        = require('jsonwebtoken');
+	, passport   = require('passport');
 
 // Database Config
 mongoose.connect(configDB.url);
@@ -37,10 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.get('/', function(err, res) {
-	res.render('home');
-});
-require('./app/routes')(app, passport, jwt);
+require('./app/routes')(app, passport);
 
 // Listen
 app.listen(port);

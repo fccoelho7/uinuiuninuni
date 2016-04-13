@@ -32197,8 +32197,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 	'use strict';
 
 	angular
-		.module('app', ['ngRoute', 'dndLists'])
-		.config();
+		.module('app', ['ngRoute', 'dndLists']);
 
 })();
 ;
@@ -32214,7 +32213,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 			$routeProvider
 
 				.when('/board', {
-					templateUrl: 'views/board.html',
+					templateUrl: 'partials/board.html',
 					controller: 'BoardController',
 					resolve: {
 						user: function(AuthService, $location) {
@@ -32230,13 +32229,13 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				})
 
 				.when('/login', {
-					templateUrl: 'views/login.html',
+					templateUrl: 'partials/login.html',
 					controller: 'UserController',
 					resolve: { isLogged: isLogged }
 				})
 
 				.when('/register', {
-					templateUrl: 'views/register.html',
+					templateUrl: 'partials/register.html',
 					controller: 'UserController',
 					resolve: { isLogged: isLogged }
 				})
@@ -32283,6 +32282,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 	function BoardController($scope, BoardService, user) {
 
+		generateMessages();
+
 		var boardDefault = {
 			selected: null,
 			lists: {
@@ -32305,14 +32306,15 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 		$scope.models = (user.board) ? JSON.parse(user.board) : boardDefault;
 
-		$scope.addItem = function(listName, item) {
-			$scope.models.lists[listName].push({
-				label: item.label
+		$scope.addItem = function(prop, item) {
+			$scope.models.lists[prop].push({
+				label: item.label,
+				expires: new Date(item.expires).getTime()
 			});
 		}
 
-		$scope.removeItem = function(listName, $i) {
-			$scope.models.lists[listName].splice($i, 1);
+		$scope.removeItem = function(prop, $i) {
+			$scope.models.lists[prop].splice($i, 1);
 		}
 
 		$scope.$watch('models', function(model) {
@@ -32324,6 +32326,38 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 					console.error(status, data);
 				});
 		}, true);
+
+		function generateMessages() {
+			var board = angular.fromJson(user.board)
+			  , lists = board.lists
+			  , arr   = [];
+
+			for (var prop in lists) {
+				for (var val in lists[prop]) {
+					var item 		 = lists[prop][val]
+						, expires  = item.expires
+						, now  		 = new Date().getTime()
+						, ONE      = (86400 * 1000)
+						, TWO      = (172800 * 1000)
+					;
+
+					if (expires > now) {
+
+						if (expires < (now + ONE)) {
+							item.status = 1;
+							arr.push(item);
+						}
+
+						if (expires > (now + ONE) && expires < (now + TWO)) {
+							item.status = 2;
+							arr.push(item);
+						}
+					}
+				}
+			}
+
+			return $scope.messages = arr;
+		}
 	}
 
 })();
@@ -32358,6 +32392,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 	function UserController($scope, $location, AuthService) {
 
+		$scope.message = null;
+
 		$scope.login = function(username, password) {
 
 			if (username == undefined || password == undefined) {
@@ -32369,8 +32405,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				.success(function(data) {
 					$location.path('/board');
 				})
-				.error(function(status, data) {
-					console.error(status, data);
+				.error(function(data, status) {
+					$scope.message = data.message;
 				});
 		}
 
@@ -32379,8 +32415,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				.success(function(data) {
 					$location.path('/board');
 				})
-				.error(function(status, data) {
-					console.error(status, data);
+				.error(function(data, status) {
+					$scope.message = data.message;
 				});
 		}
 

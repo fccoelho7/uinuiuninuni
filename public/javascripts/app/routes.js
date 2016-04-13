@@ -10,7 +10,7 @@
 			$routeProvider
 
 				.when('/board', {
-					templateUrl: 'views/board.html',
+					templateUrl: 'partials/board.html',
 					controller: 'BoardController',
 					resolve: {
 						user: function(AuthService, $location) {
@@ -26,13 +26,13 @@
 				})
 
 				.when('/login', {
-					templateUrl: 'views/login.html',
+					templateUrl: 'partials/login.html',
 					controller: 'UserController',
 					resolve: { isLogged: isLogged }
 				})
 
 				.when('/register', {
-					templateUrl: 'views/register.html',
+					templateUrl: 'partials/register.html',
 					controller: 'UserController',
 					resolve: { isLogged: isLogged }
 				})

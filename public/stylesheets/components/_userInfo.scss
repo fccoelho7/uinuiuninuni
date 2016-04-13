@@ -14,7 +14,7 @@
 			margin-right: 0;
 		}
 
-		&:hover > ul {
+		&.active > ul {
 			opacity: 1;
 			visibility: visible;
 			@include transform(translateY(0));
@@ -25,7 +25,7 @@
 	ul.sub {
 		background-color: #EEE;
 		border-radius: 3px;
-		box-shadow: 0 1px 2px #333;
+		box-shadow: 0 1px 2px #777;
 		list-style: none;
 		margin: 0;
 		opacity: 0;
@@ -54,14 +54,29 @@
 
 		li {
 			background-color: #FEFEFE;
-			border-bottom: 1px solid #EEE;
 			font-size: 14px;
+			margin: 0;
 			padding: 10px;
 			text-align: left;
 			width: 100%;
 
 			&:first-child {
 				border-radius: 3px 3px 0 0;
+			}
+
+			&.urgent {
+				background-color: #F5AB9E;
+				color: #8C3A2B;
+			}
+
+			&.moderate {
+				background-color: #FCEBBD;
+				color: #AF9540;
+			}
+
+			.message-date {
+				font-size: 12px;
+				font-weight: 600;
 			}
 		}
 	}

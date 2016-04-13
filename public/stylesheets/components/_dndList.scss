@@ -24,7 +24,7 @@ ul[dnd-list] li {
 	border: 1px solid $colorQuaternary;
 	border-radius: 5px;
 	box-shadow: 0 1px 0px $colorQuaternary;
-	cursor: move;
+	cursor: -webkit-grab;
 	display: block;
 	margin: 5px;
 	padding: 10px 15px;
