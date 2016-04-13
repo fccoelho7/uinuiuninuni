@@ -1,0 +1,36 @@
+<div ng-include="'partials/header.html'"></div>
+
+<div class="container">
+
+	<div class="board">
+		<div class="board-list" ng-repeat="(listName, list) in models.lists">
+			<h3><strong>{{listName}}</strong></h3>
+			<ul dnd-list="list">
+				<li ng-repeat="item in list"
+					dnd-draggable="item"
+					dnd-moved="list.splice($index, 1)"
+					dnd-effect-allowed="move"
+					dnd-selected="models.selected = item"
+					ng-class="{'selected': models.selected === item}"
+					>
+					<div class="item-expires" ng-if="item.expires">
+						<span class="item-expires-date">
+							<i class="icon-calender"></i>
+							{{item.expires | date:"dd/MM/yyyy"}}
+						</span>
+					</div>
+					{{item.label}}
+					<div class="trash" ng-click="removeItem(listName, $index)">
+						<span class="icon-trash"></span>
+					</div>
+				</li>
+				<form name="boardForm" class="board-form" ng-submit="addItem(listName, item)">
+					<input class="board-form-label" name="item.label" type="text" ng-model="item.label" placeholder="Nome da tarefa.." required>
+					<input class="board-form-expires" type="date" ng-model="item.expires">
+					<button class="board-form-submit button-outline" type="submit">Salvar</button>
+				</form>
+			</ul>
+		</div>
+	</div>
+
+</div>

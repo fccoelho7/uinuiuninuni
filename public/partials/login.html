@@ -1,0 +1,18 @@
+<div class="login">
+	<h2>Entrar</h2>
+	<form method="POST" ng-submit="login(username, password)">
+		<label for="username">Usuário</label>
+		<input type="text" name="username" autofocus="true" ng-model="username" required>
+		<label for="password">Senha</label>
+		<input type="password" name="password" ng-model="password" required>
+		<div class="form-buttons">
+			<input type="button" class="button-outline" value="Cadastrar" ng-click="go('register')">
+			<input type="submit" class="button" value="Entrar">
+		</div>
+		<!-- <hr>
+		<a class="facebook-signup" href="#">
+			Entrar com o Facebook
+		</a> -->
+	</form>
+	<div ng-show="message">{{message}}</div>
+</div>
