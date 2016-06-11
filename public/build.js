@@ -32282,7 +32282,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 	function BoardController($scope, BoardService, user) {
 
-		generateMessages();
+		// generateMessages();
 
 		var boardDefault = {
 			selected: null,
@@ -32303,7 +32303,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		};
 
 		$scope.user = user.username;
-
 		$scope.models = (user.board) ? JSON.parse(user.board) : boardDefault;
 
 		$scope.addItem = function(prop, item) {
@@ -32327,37 +32326,37 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				});
 		}, true);
 
-		function generateMessages() {
-			var board = angular.fromJson(user.board)
-			  , lists = board.lists
-			  , arr   = [];
-
-			for (var prop in lists) {
-				for (var val in lists[prop]) {
-					var item 		 = lists[prop][val]
-						, expires  = item.expires
-						, now  		 = new Date().getTime()
-						, ONE      = (86400 * 1000)
-						, TWO      = (172800 * 1000)
-					;
-
-					if (expires > now) {
-
-						if (expires < (now + ONE)) {
-							item.status = 1;
-							arr.push(item);
-						}
-
-						if (expires > (now + ONE) && expires < (now + TWO)) {
-							item.status = 2;
-							arr.push(item);
-						}
-					}
-				}
-			}
-
-			return $scope.messages = arr;
-		}
+		// function generateMessages() {
+		// 	var board = angular.fromJson(user.board)
+		// 	  , lists = board.lists
+		// 	  , arr   = [];
+		//
+		// 	for (var prop in lists) {
+		// 		for (var val in lists[prop]) {
+		// 			var item 		 = lists[prop][val]
+		// 				, expires  = item.expires
+		// 				, now  		 = new Date().getTime()
+		// 				, ONE      = (86400 * 1000)
+		// 				, TWO      = (172800 * 1000)
+		// 			;
+		//
+		// 			if (expires > now) {
+		//
+		// 				if (expires < (now + ONE)) {
+		// 					item.status = 1;
+		// 					arr.push(item);
+		// 				}
+		//
+		// 				if (expires > (now + ONE) && expires < (now + TWO)) {
+		// 					item.status = 2;
+		// 					arr.push(item);
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		//
+		// 	return $scope.messages = arr;
+		// }
 	}
 
 })();

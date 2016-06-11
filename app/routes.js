@@ -10,7 +10,7 @@ module.exports = function(app, passport) {
 		passport.authenticate('login', function(err, user, info) {
 			if (err) return next(err);
 			if (!user) return res.status(401).json(info);
-			req.logIn(user, function(err) {
+			req.login(user, function(err) {
 				if (err) { return next(err); }
 				return res.status(200).json({ message: 'User logged!' });
 			});
@@ -21,7 +21,7 @@ module.exports = function(app, passport) {
 		passport.authenticate('register', function(err, user, info) {
 			if (err) return next(err);
 			if (!user) return res.status(401).json(info);
-			req.logIn(user, function(err) {
+			req.login(user, function(err) {
 				if (err) { return next(err); }
 				return res.status(200).json({ message: 'User registered!' });
 			});
